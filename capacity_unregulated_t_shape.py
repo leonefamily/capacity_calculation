@@ -94,9 +94,9 @@ def get_load_coefficient(
         i: Union[int, float],
         c: Union[int, float]
 ) -> float:
-    if i <= c:
+    if i > 0:
         return i / c
-    return 1.
+    return sys.maxsize
 
 
 def get_unbloated_flow_probability(
@@ -158,6 +158,13 @@ def main(
         i7: int,
         i8: int
 ):
+    # i2=396
+    # i3=567
+    # i4=284
+    # i6=6
+    # i7=6
+    # i8=401
+
     ih6 = round(i2 + 0.5 * i3)
     ih4 = round(i2 + 0.5 * i3 + i8 + i7)
     ih7 = i2 + i3
@@ -168,7 +175,6 @@ def main(
         tg=get_critical_time_offset(flow_num=4, free_flow_speed=50),
         ih=ih4
     )
-    c4 = cg4 * get_unbloated_flow_probability(i_n=i4, cgn=cg4)
     c6 = get_base_capacity(
         tf=get_follow_up_offset(flow_num=6, p_sign=4),
         tg=get_critical_time_offset(flow_num=6, free_flow_speed=50),
@@ -179,6 +185,8 @@ def main(
         tg=get_critical_time_offset(flow_num=7, free_flow_speed=50),
         ih=ih7
     )
+    p07 = get_unbloated_flow_probability(i_n=i7, cgn=c7)
+    c4 = cg4 * p07
 
     av2 = get_load_coefficient(i2, c2)
     av3 = get_load_coefficient(i3, c3)
